@@ -29,7 +29,7 @@ def get_user_id(telegram_id: int) -> int:
 
 async def register(user_id: int) -> None:
     """
-    Вносит информацию о пользователе
+    Вносит информацию о пользователе в БД
     :param user_id: Telegram ID пользователя
     :return: None
     """

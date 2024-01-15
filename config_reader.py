@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    """Хранит данные по Токену"""
+    """Хранит данные по Токену бота"""
     bot_token: SecretStr
     model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8')
 

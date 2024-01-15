@@ -9,7 +9,7 @@ from config_reader import config
 
 async def main():
     """
-    Main func с параметрами логирования
+    Main func с параметрами логирования, включением бота и диспетчера, а так же подключение рутеров.
     :return: start polling
     """
     logging.basicConfig(

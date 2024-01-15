@@ -85,9 +85,13 @@ async def create_title(message: Message, state: FSMContext):
     :param state: Состояние конечного автомата
     :return: None
     """
-    await state.update_data(title=message.text)
-    await message.answer("Отлично! Теперь введите текст")
-    await state.set_state(Notes.create_text)
+    title_message = message.text
+    if len(title_message) <= 30:
+        await state.update_data(title=title_message)
+        await message.answer("Отлично! Теперь введите текст")
+        await state.set_state(Notes.create_text)
+    else:
+        await message.answer("Заголовок слишком большой(")
 
 
 @router.message(Notes.create_text, F.text)
@@ -98,20 +102,24 @@ async def create_text(message: Message, state: FSMContext):
     :param state: Состояние конечного автомата
     :return: None
     """
-    await state.update_data(text=message.text)
-    await message.answer("Отлично!", reply_markup=main_menu_reply_keyboard)
+    text_message = message.text
+    if len(text_message) <= 500:
+        await state.update_data(text=message.text)
+        await message.answer("Отлично!", reply_markup=main_menu_reply_keyboard)
 
-    note_data = await state.get_data()
-    note_title_data = note_data["title"]
-    note_text_data = note_data["text"]
+        note_data = await state.get_data()
+        note_title_data = note_data["title"]
+        note_text_data = note_data["text"]
 
-    tg_id = message.from_user.id
-    user_id = get_user_id(tg_id)
+        tg_id = message.from_user.id
+        user_id = get_user_id(tg_id)
 
-    insert_notes(user_id, note_title_data, note_text_data)
+        insert_notes(user_id, note_title_data, note_text_data)
 
-    # await state.set_state(Notes.show_notes)
-    await state.clear()
+        # await state.set_state(Notes.show_notes)
+        await state.clear()
+    else:
+        await message.answer("Текст заметки слишком большой(")
 
 
 @router.message(Notes.choose_notes, F.text)
